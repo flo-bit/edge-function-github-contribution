@@ -1,0 +1,42 @@
+export async function GET() {
+    // GitHub GraphQL query to get user's contributions
+    const query = `
+      query {
+        viewer {
+          login
+          contributionsCollection {
+            contributionCalendar {
+              totalContributions
+              weeks {
+                contributionDays {
+                  date
+                  contributionCount
+                  color
+                }
+              }
+            }
+          }
+        }
+      }
+    `;
+  
+    // Fetch data from GitHub using the token stored in Vercel environment variables
+    const response = await fetch('https://api.github.com/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.GITHUB_TOKEN}` // Fetching the GitHub token securely
+      },
+      body: JSON.stringify({ query })
+    });
+  
+    if (!response.ok) {
+      return new Response(`Error fetching data from GitHub: ${response.statusText}`, { status: 500 });
+    }
+  
+    const data = await response.json();
+  
+    return new Response(JSON.stringify(data), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
