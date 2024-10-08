@@ -203,6 +203,10 @@ json.data.viewer.languages = Array.from(languages, ([name, size]) => ({ name, si
 
 if you want to include private repositories, add the `repo:status` scope to your personal access token and remove line 33 in `api/github-data.ts`: `privacy: PUBLIC` (obviously at your own risk).
 
+## rate limits
+
+the function uses the github graphql api, which has a rate limit of 5000 points per hour, the request made costs 1 point, so you can make 5000 requests per hour (or a bit more than 1 per second). that being said, some simple client side caching is always a good idea (e.g. using `localStorage`) and a graceful error handling in case the rate limit is exceeded. more complex caching you'll have to figure out yourself.
+
 ## license
 
 MIT
