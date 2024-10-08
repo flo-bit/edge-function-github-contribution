@@ -30,6 +30,7 @@ export async function GET(req: NextRequest) {
           repositories(
               first: 100
               ownerAffiliations: OWNER
+              privacy: PUBLIC
               orderBy: { field: STARGAZERS, direction: DESC }
           ) {
             totalCount

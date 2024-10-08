@@ -18,25 +18,25 @@ detailed infos:
 
 - current status of user
 
+see [response type](#response-type) for the full type definition, or [click here to see the response for my account](https://edge-function-github-contribution.vercel.app/api/github-data)
+
 ## Usage
 
 1. create a personal access token on github, go to `settings` -> `developer settings` -> `personal access tokens (classic)` -> `generate new token (classic)`, set expiration date to "No expiration" and add the `public_repo`, `read:user` and `repo:status` scopes.
 
-2. fork repository
-
-3. deploy to vercel 
+2. deploy to vercel 
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fflo-bit%2Fedge-function-github-contribution&env=GITHUB_TOKEN)
 
-4. set environment variable `GITHUB_TOKEN` to the personal access token you created in step 1
+3. set environment variable `GITHUB_TOKEN` to the personal access token you created in step 1
 
-5. get the url of the deployed function and use it in your application, by sending a GET request to the url
+4. get the url of the deployed function and use it in your application, by sending a GET request to the url
 
 ```
 https://<your-deployment-url>/api/github-data
 ```
 
-6. simple example using fetch:
+5. simple example using fetch:
 
 ```js
 const res = await fetch('https://edge-function-github-contribution.vercel.app/api/github-data');
