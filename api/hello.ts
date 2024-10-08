@@ -1,4 +1,11 @@
-export async function GET() {
+import { NextRequest } from 'next/server'
+import cors from '../lib/cors';
+
+export const config = {
+  runtime: 'edge',
+}
+
+export async function GET(req: NextRequest) {
     // GitHub GraphQL query to get user's contributions
     const query = `
       query {
@@ -31,12 +38,13 @@ export async function GET() {
     });
   
     if (!response.ok) {
-      return new Response(`Error fetching data from GitHub: ${response.statusText}`, { status: 500 });
+      return cors(req, new Response(`Error fetching data from GitHub: ${response.statusText}`, { status: 500 }));
     }
   
     const data = await response.json();
   
-    return new Response(JSON.stringify(data), {
+
+    return cors(req, new Response(JSON.stringify(data), {
       headers: { 'Content-Type': 'application/json' },
-    });
+    }));
   }
