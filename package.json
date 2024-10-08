@@ -2,5 +2,6 @@
   "dependencies": {
     "@types/node": "^22.7.5",
     "next": "^14.2.14"
-  }
+  },
+  "license": "MIT"
 }

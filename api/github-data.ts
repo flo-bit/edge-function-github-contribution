@@ -36,6 +36,7 @@ export async function GET(req: NextRequest) {
             nodes {
               name
               stargazerCount
+              description
               forkCount
               watchers {
                 totalCount
@@ -88,11 +89,16 @@ export async function GET(req: NextRequest) {
             updatedAt
           }
         }
-        rateLimit {
-          cost
-        }
       }
     `;
+
+    //
+    // to check cost of query, add this to the query (before the last } bracket)
+    // rateLimit {
+    //   cost
+    //   remaining
+    // }
+    // cost of current query is 1 (rate limit 5000 per hour)
   
     // Fetch data from GitHub using the token stored in Vercel environment variables
     const response = await fetch('https://api.github.com/graphql', {
