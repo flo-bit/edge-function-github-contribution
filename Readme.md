@@ -22,7 +22,7 @@ see [response type](#response-type) for the full type definition, or [click here
 
 ## Usage
 
-1. create a personal access token on github, go to `settings` -> `developer settings` -> `personal access tokens (classic)` -> `generate new token (classic)`, set expiration date to "No expiration" and add the `public_repo`, `read:user` and `repo:status` scopes.
+1. create a personal access token on github, go to `settings` -> `developer settings` -> `personal access tokens (classic)` -> `generate new token (classic)`, set expiration date to "No expiration" and add the `public_repo` scope.
 
 2. deploy to vercel 
 
@@ -198,6 +198,10 @@ json.data.viewer.languages = Array.from(languages, ([name, size]) => ({ name, si
     (a, b) => b.size - a.size
 );
 ```
+
+## add private repositories
+
+if you want to include private repositories, add the `repo:status` scope to your personal access token and remove line 33 in `api/github-data.ts`: `privacy: PUBLIC` (obviously at your own risk).
 
 ## license
 
