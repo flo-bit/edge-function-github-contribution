@@ -12,6 +12,10 @@ export async function GET(req: NextRequest) {
         viewer {
           login
           contributionsCollection {
+            totalCommitContributions
+            totalIssueContributions
+            totalPullRequestContributions
+            totalPullRequestReviewContributions
             contributionCalendar {
               totalContributions
               weeks {
@@ -23,6 +27,69 @@ export async function GET(req: NextRequest) {
               }
             }
           }
+          repositories(
+              first: 100
+              ownerAffiliations: OWNER
+              orderBy: { field: STARGAZERS, direction: DESC }
+          ) {
+            totalCount
+            nodes {
+              name
+              stargazerCount
+              forkCount
+              watchers {
+                totalCount
+              }
+              languages(first: 10) {
+                totalSize
+                edges {
+                  node {
+                    name
+                  }
+                  size
+                }
+              }
+				    }
+          }
+          starredRepositories {
+            totalCount
+          }
+          followers {
+            totalCount
+          }
+          following {
+            totalCount
+          }
+          issues_sum:issues{
+            totalCount
+          }
+          issues_open:issues(states: OPEN){
+            totalCount
+          }
+          issues_closed:issues(states: CLOSED){
+            totalCount
+          }
+          pr_sum:pullRequests{
+            totalCount
+          }
+          pr_open:pullRequests(states: OPEN){
+            totalCount
+          }
+          pr_closed:pullRequests(states: CLOSED){
+            totalCount
+          }
+          pr_merged:pullRequests(states: MERGED){
+            totalCount
+          }
+          status {
+            emoji
+            message
+            expiresAt
+            updatedAt
+          }
+        }
+        rateLimit {
+          cost
         }
       }
     `;
@@ -43,7 +110,6 @@ export async function GET(req: NextRequest) {
   
     const data = await response.json();
   
-
     return cors(req, new Response(JSON.stringify(data), {
       headers: { 'Content-Type': 'application/json' },
     }));
