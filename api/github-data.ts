@@ -9,17 +9,15 @@ export async function GET(req: NextRequest) {
   const allowUserSelection = true;
 
   const { searchParams } = new URL(req.url);
-  const login = searchParams.get('user');
+  const login = searchParams.get('user') ?? 'flo-bit'
 
   if(login && !allowUserSelection) {
     return new Response('User selection is disabled', { status: 400 });
   }
 
-  const query = (login && allowUserSelection ? `
+  const query = `
     query($login: String!) {
-      user(login: $login) {`:`
-      query {
-        viewer {`) + `
+      user(login: $login) {
           login
           contributionsCollection {
             totalCommitContributions
@@ -101,7 +99,7 @@ export async function GET(req: NextRequest) {
           }
         }
       }
-    `;
+  `;
 
     //
     // to check cost of query, add this to the query (before the last } bracket)
@@ -126,8 +124,12 @@ export async function GET(req: NextRequest) {
     }
   
     const data = await response.json();
+
+    if(!data.data) {
+      return cors(req, new Response(`Error fetching data from GitHub: ${data.message}`, { status: 500 }));
+    }
   
-    return cors(req, new Response(JSON.stringify(data), {
+    return cors(req, new Response(JSON.stringify(data.data), {
       headers: { 'Content-Type': 'application/json' },
     }));
   }

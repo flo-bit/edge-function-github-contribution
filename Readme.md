@@ -85,82 +85,80 @@ const githubGraphColors = ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'
 export type GithubGraphColor = (typeof githubGraphColors)[number];
 
 export type GitHubResponse = {
-	data: {
-		viewer: {
-			login: string;
-			contributionsCollection: {
-				totalCommitContributions: number;
-				totalIssueContributions: number;
-				totalPullRequestContributions: number;
-				totalPullRequestReviewContributions: number;
-				contributionCalendar: {
-					totalContributions: number;
-					weeks: {
-						contributionDays: {
-							date: string;
-							contributionCount: number;
-							color: GithubGraphColor;
-						}[];
+	user: {
+		login: string;
+		contributionsCollection: {
+			totalCommitContributions: number;
+			totalIssueContributions: number;
+			totalPullRequestContributions: number;
+			totalPullRequestReviewContributions: number;
+			contributionCalendar: {
+				totalContributions: number;
+				weeks: {
+					contributionDays: {
+						date: string;
+						contributionCount: number;
+						color: GithubGraphColor;
 					}[];
-				};
-			};
-			repositories: {
-				totalCount: number;
-				nodes: {
-					name: string;
-					stargazerCount: number;
-					forkCount: number;
-					watchers: {
-						totalCount: number;
-					};
-					languages: {
-						totalSize: number;
-						edges: {
-							node: {
-								name: string;
-							};
-							size: number;
-						}[];
-					};
 				}[];
 			};
-			starredRepositories: {
-				totalCount: number;
-			};
-			followers: {
-				totalCount: number;
-			};
-			following: {
-				totalCount: number;
-			};
-			issues_sum: {
-				totalCount: number;
-			};
-			issues_open: {
-				totalCount: number;
-			};
-			issues_closed: {
-				totalCount: number;
-			};
-			pr_sum: {
-				totalCount: number;
-			};
-			pr_open: {
-				totalCount: number;
-			};
-			pr_closed: {
-				totalCount: number;
-			};
-			pr_merged: {
-				totalCount: number;
-			};
-			status: {
-				emoji?: string;
-				message?: string;
-				expiresAt?: string;
-				updatedAt?: string;
-			} | null;
 		};
+		repositories: {
+			totalCount: number;
+			nodes: {
+				name: string;
+				stargazerCount: number;
+				forkCount: number;
+				watchers: {
+					totalCount: number;
+				};
+				languages: {
+					totalSize: number;
+					edges: {
+						node: {
+							name: string;
+						};
+						size: number;
+					}[];
+				};
+			}[];
+		};
+		starredRepositories: {
+			totalCount: number;
+		};
+		followers: {
+			totalCount: number;
+		};
+		following: {
+			totalCount: number;
+		};
+		issues_sum: {
+			totalCount: number;
+		};
+		issues_open: {
+			totalCount: number;
+		};
+		issues_closed: {
+			totalCount: number;
+		};
+		pr_sum: {
+			totalCount: number;
+		};
+		pr_open: {
+			totalCount: number;
+		};
+		pr_closed: {
+			totalCount: number;
+		};
+		pr_merged: {
+			totalCount: number;
+		};
+		status: {
+			emoji?: string;
+			message?: string;
+			expiresAt?: string;
+			updatedAt?: string;
+		} | null;
 	};
 };
 ```
