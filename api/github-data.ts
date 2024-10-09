@@ -6,10 +6,20 @@ export const config = {
 }
 
 export async function GET(req: NextRequest) {
-    // GitHub GraphQL query to get user's contributions
-    const query = `
+  const allowUserSelection = true;
+
+  const { searchParams } = new URL(req.url);
+  const login = searchParams.get('user');
+
+  if(login && !allowUserSelection) {
+    return new Response('User selection is disabled', { status: 400 });
+  }
+
+  const query = (login && allowUserSelection ? `
+    query($login: String!) {
+      user(login: $login) {`:`
       query {
-        viewer {
+        viewer {`) + `
           login
           contributionsCollection {
             totalCommitContributions
@@ -108,7 +118,7 @@ export async function GET(req: NextRequest) {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${process.env.GITHUB_TOKEN}` // Fetching the GitHub token securely
       },
-      body: JSON.stringify({ query })
+      body: JSON.stringify({ query, variables: { login } }),
     });
   
     if (!response.ok) {
