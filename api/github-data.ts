@@ -47,6 +47,8 @@ export async function GET(req: NextRequest) {
               stargazerCount
               description
               forkCount
+              createdAt
+              updatedAt
               watchers {
                 totalCount
               }
