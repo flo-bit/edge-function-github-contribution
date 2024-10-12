@@ -30,10 +30,14 @@ see [response type](#response-type) for the full type definition, or [click here
 
 3. set environment variable `GITHUB_TOKEN` to the personal access token you created in step 1
 
-4. get the url of the deployed function and use it in your application, by sending a GET request to the url (if no user is given, returns the data of the user that owns the token):
+4. get the url of the deployed function and use it in your application, by sending a GET request to the url (if no user is given, returns the data of the user that owns the token, user selection by default is disabled, see below how to enable it):
 
-```
-https://<your-deployment-url>/api/github-data?user=<github-username>
+```http
+// get data of user that owns the token
+https://<your-deployment-url>/api/github-data
+
+// get data of a specific user (disabled by default, see below how to enable it)
+https://<your-deployment-url>/api/github-data?user=<username>
 ```
 
 5. simple example using fetch:
@@ -47,10 +51,10 @@ console.log(json);
 
 7. it's recommended to remove data points you don't need, to reduce the size of the response and speed up the request
 
-8. if you want to disallow querying users other than yourself, change line 9 in `api/github-data.ts` to:
+8. if you want to allow querying users other than yourself, change line 9 in `api/github-data.ts` to:
 
 ```ts
-  const allowUserSelection = false;
+  const allowUserSelection = true;
 ```
 
 ## development
@@ -87,6 +91,7 @@ export type GithubGraphColor = (typeof githubGraphColors)[number];
 export type GitHubResponse = {
 	user: {
 		login: string;
+		avatarUrl: string;
 		contributionsCollection: {
 			totalCommitContributions: number;
 			totalIssueContributions: number;

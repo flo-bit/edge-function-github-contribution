@@ -6,18 +6,22 @@ export const config = {
 }
 
 export async function GET(req: NextRequest) {
-  const allowUserSelection = true;
+  const allowUserSelection = false;
 
   const { searchParams } = new URL(req.url);
-  const login = searchParams.get('user') ?? 'flo-bit'
+  const login = searchParams.get('user');
 
   if(login && !allowUserSelection) {
     return new Response('User selection is disabled', { status: 400 });
   }
 
-  const query = `
+  const query = (login && allowUserSelection ? `
     query($login: String!) {
       user(login: $login) {
+      ` : `
+    query {
+      viewer {
+      `) + `
           login
           avatarUrl
           contributionsCollection {
@@ -131,7 +135,17 @@ export async function GET(req: NextRequest) {
     if(!data.data) {
       return cors(req, new Response(`Error fetching data from GitHub: ${data.message}`, { status: 500 }));
     }
-  
+
+    // change from data.data.viewer to data.data.user if necessary
+    if(data.data.viewer) {
+      data.data.user = data.data.viewer;
+
+      delete data.data.viewer;
+
+      console.log('Changed viewer to user');
+    }
+
+    
     return cors(req, new Response(JSON.stringify(data.data), {
       headers: { 'Content-Type': 'application/json' },
     }));
