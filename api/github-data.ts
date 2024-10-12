@@ -19,6 +19,7 @@ export async function GET(req: NextRequest) {
     query($login: String!) {
       user(login: $login) {
           login
+          avatarUrl
           contributionsCollection {
             totalCommitContributions
             totalIssueContributions
