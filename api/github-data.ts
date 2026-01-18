@@ -5,8 +5,12 @@ export const config = {
   runtime: 'edge',
 }
 
+const corsOptions = {
+  origin: ['https://blento.app', 'https://www.blento.app'],
+};
+
 export async function GET(req: NextRequest) {
-  const allowUserSelection = false;
+  const allowUserSelection = true;
 
   const { searchParams } = new URL(req.url);
   const login = searchParams.get('user');
@@ -127,13 +131,13 @@ export async function GET(req: NextRequest) {
     });
   
     if (!response.ok) {
-      return cors(req, new Response(`Error fetching data from GitHub: ${response.statusText}`, { status: 500 }));
+      return cors(req, new Response(`Error fetching data from GitHub: ${response.statusText}`, { status: 500 }), corsOptions);
     }
   
     const data = await response.json();
 
     if(!data.data) {
-      return cors(req, new Response(`Error fetching data from GitHub: ${data.message}`, { status: 500 }));
+      return cors(req, new Response(`Error fetching data from GitHub: ${data.message}`, { status: 500 }), corsOptions);
     }
 
     // change from data.data.viewer to data.data.user if necessary
@@ -148,5 +152,5 @@ export async function GET(req: NextRequest) {
     
     return cors(req, new Response(JSON.stringify(data.data), {
       headers: { 'Content-Type': 'application/json' },
-    }));
+    }), corsOptions);
   }

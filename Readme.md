@@ -2,8 +2,6 @@
 
 vercel edge function that returns some infos of a github account as a json (contributions, repositories, followers, following, issues, prs, status).
 
-can be called from any frontend application, including static sites.
-
 detailed infos:
 
 - contributions of the last year total, and split by day 
@@ -24,6 +22,15 @@ see [response type](#response-type) for the full type definition, or [click here
 
 1. create a personal access token on github, go to `settings` -> `developer settings` -> `personal access tokens (classic)` -> `generate new token (classic)`, set expiration date to "No expiration" and add the `public_repo` scope.
 
+2. if using in browser, set cors options in `github-data.ts:8-10`
+
+```ts
+// set your domain here
+const corsOptions = {
+  origin: ['https://blento.app', 'https://www.blento.app'],
+};
+```
+
 2. deploy to vercel 
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fflo-bit%2Fedge-function-github-contribution&env=GITHUB_TOKEN)
@@ -36,7 +43,7 @@ see [response type](#response-type) for the full type definition, or [click here
 // get data of user that owns the token
 https://<your-deployment-url>/api/github-data
 
-// get data of a specific user (disabled by default, see below how to enable it)
+// get data of a specific user (to disable see below)
 https://<your-deployment-url>/api/github-data?user=<username>
 ```
 
@@ -51,10 +58,10 @@ console.log(json);
 
 7. it's recommended to remove data points you don't need, to reduce the size of the response and speed up the request
 
-8. if you want to allow querying users other than yourself, change line 9 in `api/github-data.ts` to:
+8. if you dont want to allow querying users other than yourself, change line 9 in `api/github-data.ts` to:
 
 ```ts
-  const allowUserSelection = true;
+  const allowUserSelection = false;
 ```
 
 ## development
