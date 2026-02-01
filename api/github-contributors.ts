@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
 
   while (true) {
     const response = await fetch(
-      `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contributors?per_page=100&page=${page}`,
+      `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contributors?per_page=100&anon=1&page=${page}`,
       {
         headers: {
           'Accept': 'application/vnd.github+json',
@@ -44,9 +44,10 @@ export async function GET(req: NextRequest) {
   }
 
   const data = allContributors.map((c: any) => ({
-    username: c.login,
-    avatarUrl: c.avatar_url,
+    username: c.login || c.name || 'anonymous',
+    avatarUrl: c.avatar_url || null,
     contributions: c.contributions,
+    anonymous: c.type === 'Anonymous',
   }));
 
   return cors(req, new Response(JSON.stringify(data), {
